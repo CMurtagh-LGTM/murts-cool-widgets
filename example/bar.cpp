@@ -1,15 +1,35 @@
-#include "application.hpp"
-#include "widget/clock.hpp"
-#include "window.hpp"
+#include <gtk4-layer-shell.h>
+#include <gtkmm/application.h>
+#include <gtkmm/label.h>
+#include <gtkmm/window.h>
 
-#include <iostream>
+#include "source/clock.hpp"
+
+class bar : public Gtk::Window {
+public:
+    bar() : clock(100, "%I:%M %p %a %e %b %y") {
+
+        // Make this a bar using gtk4-layer-shell
+        gtk_layer_init_for_window(gobj());
+        gtk_layer_set_layer(gobj(), GTK_LAYER_SHELL_LAYER_BOTTOM);
+        gtk_layer_auto_exclusive_zone_enable(gobj());
+        gtk_layer_set_anchor(gobj(), GTK_LAYER_SHELL_EDGE_TOP, true);
+        gtk_layer_set_anchor(gobj(), GTK_LAYER_SHELL_EDGE_LEFT, true);
+        gtk_layer_set_anchor(gobj(), GTK_LAYER_SHELL_EDGE_RIGHT, true);
+
+        set_child(clock_label);
+        clock.tick.connect(sigc::mem_fun(clock_label, &Gtk::Label::set_text));
+    }
+    ~bar() override {}
+
+private:
+    mcw::source::clock clock;
+
+    Gtk::Label clock_label;
+};
 
 int main(int argc, char** argv) {
-    application::Params params = {};
-    return application::application(argc, argv, params, [](GtkApplication* app) {
-        window::Params params = {};
-        auto gtk_window       = window::new_window(app, params);
-        gtk_window_set_child(gtk_window, widget::clock("%I:%M %p %a %e %b %y"));
-        gtk_window_present(gtk_window);
-    });
+    auto app = Gtk::Application::create("murts.cool.widgets");
+
+    return app->make_window_and_run<bar>(argc, argv);
 }

@@ -1,5 +1,3 @@
 srcs = files(
-  'application.cpp',
-  'window.cpp',
-  'widget/clock.cpp'
+  'source/clock.cpp'
 )
