@@ -1,3 +1,4 @@
 srcs = files(
-  'source/clock.cpp'
+  'model/clock.cpp',
+  'model/mpris.cpp'
 )

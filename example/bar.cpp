@@ -3,7 +3,8 @@
 #include <gtkmm/label.h>
 #include <gtkmm/window.h>
 
-#include "source/clock.hpp"
+#include "model/clock.hpp"
+#include "model/mpris.hpp"
 
 class bar : public Gtk::Window {
 public:
@@ -24,8 +25,9 @@ public:
 
 private:
     mcw::source::clock clock;
-
     Gtk::Label clock_label;
+
+    mcw::source::mpris mpris;
 };
 
 int main(int argc, char** argv) {

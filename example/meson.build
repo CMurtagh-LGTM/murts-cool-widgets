@@ -3,6 +3,5 @@ bar_srcs = files(
 )
 
 executable('bar', bar_srcs,
-  dependencies: [gtk, gtk_layer_shell],
-  link_with: mcw,
+  dependencies: [gtk, gtk_layer_shell, mcw],
   include_directories: incdir)

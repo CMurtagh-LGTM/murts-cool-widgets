@@ -1,4 +1,4 @@
-#include "source/clock.hpp"
+#include "model/clock.hpp"
 
 #include <ctime>
 #include <glibmm/main.h>
