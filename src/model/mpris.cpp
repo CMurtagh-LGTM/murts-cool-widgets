@@ -7,16 +7,36 @@ namespace mcw::source {
     mpris::mpris()
         : ProxyInterfaces(sdbus::createDefaultBusConnection(),
                           "org.mpris.MediaPlayer2.spotify",
-                          "/org/mpris/MediaPlayer2") {}
+                          "/org/mpris/MediaPlayer2") {
+        registerProxy();
+    }
 
-    void mpris::onPropertiesChanged(const std::string& interface_name,
+    mpris::~mpris() {
+        unregisterProxy();
+    }
+
+    void mpris::onPropertiesChanged(const std::string&,
                                     const std::map<std::string, sdbus::Variant>& changed_properties,
-                                    const std::vector<std::string>& invalidated_properties) {
-        properties_changed.emit();
+                                    const std::vector<std::string>&) {
+        auto metadata = changed_properties.at("Metadata").get<std::map<std::string, sdbus::Variant>>();
+        if (metadata.contains("xesam:title")) {
+            track_changed.emit(metadata["xesam:title"].get<std::string>());
+        }
+        if (metadata.contains("xesam:album")) {
+            album_changed.emit(metadata["xesam:album"].get<std::string>());
+        }
     }
 
     void mpris::onSeeked(const int64_t& position) {
         seek.emit(position);
+    }
+
+    std::string mpris::get_track() {
+        return Metadata()["xesam:title"].get<std::string>();
+    }
+
+    std::string mpris::get_album() {
+        return Metadata()["xesam:album"].get<std::string>();
     }
 
 }  // namespace mcw::source

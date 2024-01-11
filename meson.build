@@ -1,6 +1,6 @@
 project('murts-cool-widgets', 'cpp',
   version : '0.1',
-  default_options : ['warning_level=3'])
+  default_options : ['warning_level=3', 'cpp_std=c++20'])
 
 cmake = import('cmake')
 
@@ -31,6 +31,7 @@ mcw_lib = library('murts-cool-widgets', srcs, sdbus_cpp_xml2cpp_src,
 mcw = declare_dependency(
   sources: sdbus_cpp_xml2cpp_src,
   link_with: mcw_lib,
+  dependencies: [sdbuscpp]
 )
 
 subdir('example')
