@@ -4,6 +4,7 @@
 #include "utils/WidgetName.hpp"
 
 #include <gtkmm/label.h>
+#include <gtkmm/picture.h>
 #include <gtkmm/widget.h>
 
 namespace mcw::widget {
@@ -14,6 +15,7 @@ namespace mcw::widget {
 
         void set_track(const std::string& track);
         void set_album(const std::string& album);
+        void set_art(Glib::RefPtr<Gdk::Texture> art);
     protected:
         Gtk::SizeRequestMode get_request_mode_vfunc() const override;
         void measure_vfunc(Gtk::Orientation orientation, int for_size, int& minimum, int& natural,
@@ -25,6 +27,7 @@ namespace mcw::widget {
     private:
         Gtk::Label track_label;
         Gtk::Label album_label;
+        Gtk::Picture art_image;
     };
 }
 

@@ -6,5 +6,5 @@ fs = import('fs')
 css_file = fs.copyfile('bar.css', 'bar.css')
 
 executable('bar', bar_srcs, css_file,
-  dependencies: [gtk, gtk_layer_shell, mcw],
+  dependencies: [gtk, gtk_layer_shell, curl, mcw],
   include_directories: incdir)

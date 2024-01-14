@@ -1,6 +1,7 @@
 #ifndef MPRIS_HPP
 #define MPRIS_HPP
 
+#include <gdkmm.h>
 #include <sdbus-c++/sdbus-c++.h>
 #include <sigc++/sigc++.h>
 
@@ -22,9 +23,11 @@ namespace mcw::source {
         sigc::signal<void(const int64_t&)> seek;
         sigc::signal<void(const std::string&)> track_changed;
         sigc::signal<void(const std::string&)> album_changed;
+        sigc::signal<void(const Glib::RefPtr<Gdk::Texture>&)> art_changed;
 
         std::string get_track();
         std::string get_album();
+        Glib::RefPtr<Gdk::Texture> get_art();
     };
 }  // namespace mcw::source
 

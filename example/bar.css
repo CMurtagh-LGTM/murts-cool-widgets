@@ -1,8 +1,12 @@
-label {
-    color: blue;
+mcw-music {
+    color: black;
 }
 
-mcw-music {
-    background-color: red;
+picture {
+    border-radius: 15px;
+}
+
+label {
+    padding: 5px;
 }
 

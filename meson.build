@@ -13,6 +13,7 @@ gtk_layer_shell = dependency(
 wayland = dependency('wayland-client')
 sig = dependency('sigc++-3.0')
 json = dependency('nlohmann_json', fallback: 'nlohmann_json')
+curl = dependency('libcurl')
 
 sdbuscpp_proj_opts = cmake.subproject_options()
 sdbuscpp_proj_opts.add_cmake_defines({'BUILD_CODE_GEN': true})
@@ -25,7 +26,7 @@ subdir('protocol')
 incdir = include_directories('include')
 
 mcw_lib = library('murts-cool-widgets', srcs, sdbus_cpp_xml2cpp_src,
-  dependencies: [gtk, gtk_layer_shell, wayland, sig, sdbuscpp, json],
+  dependencies: [gtk, gtk_layer_shell, wayland, sig, json, curl, sdbuscpp],
   include_directories: incdir)
 
 mcw = declare_dependency(

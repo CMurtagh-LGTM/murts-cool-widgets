@@ -1,3 +1,4 @@
+#include <curl/curl.h>
 #include <gtk4-layer-shell.h>
 #include <gtkmm.h>
 #include <iostream>
@@ -43,8 +44,10 @@ public:
         clock.tick.connect(sigc::mem_fun(clock_label, &Gtk::Label::set_text));
         music.set_track(mpris.get_track());
         music.set_album(mpris.get_album());
+        music.set_art(mpris.get_art());
         mpris.track_changed.connect(sigc::mem_fun(music, &mcw::widget::music::set_track));
         mpris.album_changed.connect(sigc::mem_fun(music, &mcw::widget::music::set_album));
+        mpris.art_changed.connect(sigc::mem_fun(music, &mcw::widget::music::set_art));
 
         // Load extra CSS file.
         m_refCssProvider = Gtk::CssProvider::create();
@@ -77,7 +80,9 @@ private:
 };
 
 int main(int argc, char** argv) {
+    curl_global_init(CURL_GLOBAL_ALL);
     auto app = Gtk::Application::create("murts.cool.widgets");
-
-    return app->make_window_and_run<bar>(argc, argv);
+    auto r = app->make_window_and_run<bar>(argc, argv);
+    curl_global_cleanup();
+    return r;
 }
