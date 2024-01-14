@@ -32,6 +32,7 @@ void clean_buffer(void* buffer){
 }
 
 Glib::RefPtr<Gdk::Texture> fetch_image(const std::string &url){
+    // TODO make this asynchronous
     MemoryStruct chunk = {(uint8_t*)malloc(1), 0};
 
     CURL* curl_handle = curl_easy_init(); // TODO work out how to reuse

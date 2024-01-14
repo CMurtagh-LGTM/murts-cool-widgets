@@ -37,8 +37,8 @@ public:
         gtk_layer_set_anchor(gobj(), GTK_LAYER_SHELL_EDGE_LEFT, true);
         gtk_layer_set_anchor(gobj(), GTK_LAYER_SHELL_EDGE_RIGHT, true);
 
-        box.append(clock_label);
-        box.append(music);
+        box.set_center_widget(clock_label);
+        box.set_end_widget(music);
         set_child(box);
 
         clock.tick.connect(sigc::mem_fun(clock_label, &Gtk::Label::set_text));
@@ -71,7 +71,7 @@ private:
     mcw::source::clock clock;
     Gtk::Label clock_label;
 
-    Gtk::Box box;
+    Gtk::CenterBox box;
 
     mcw::source::mpris mpris;
     mcw::widget::music music;
