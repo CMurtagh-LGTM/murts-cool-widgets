@@ -5,6 +5,7 @@
 
 #include "model/clock.hpp"
 #include "model/mpris.hpp"
+#include "model/sni.hpp"
 #include "widget/music.hpp"
 
 class bar : public Gtk::Window {
@@ -64,6 +65,14 @@ public:
         m_refCssProvider->signal_parsing_error().connect(
             [this](const auto& section, const auto& error) { on_parsing_error(section, error); });
         m_refCssProvider->load_from_path("bar.css");
+
+
+        // testing
+        mcw::model::snw watcher = mcw::model::snw("mcw");
+
+        for(auto& sni : watcher.get_snis()){
+            std::cout << sni.Title() << std::endl;
+        }
     }
     ~bar() override {}
 
