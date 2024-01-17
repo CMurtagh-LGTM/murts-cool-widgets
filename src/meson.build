@@ -4,5 +4,6 @@ srcs = files(
   'model/sni.cpp',
   'widget/music.cpp',
   'utils/WidgetName.cpp',
-  'utils/fetch_image.cpp'
+  'utils/fetch_image.cpp',
+  'utils/css.cpp'
 )

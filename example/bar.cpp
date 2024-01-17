@@ -6,26 +6,11 @@
 #include "model/clock.hpp"
 #include "model/mpris.hpp"
 #include "model/sni.hpp"
+#include "utils/css.hpp"
 #include "widget/music.hpp"
 
 class bar : public Gtk::Window {
     // TODO put this somewhere else
-    void on_parsing_error(const Glib::RefPtr<const Gtk::CssSection>& section, const Glib::Error& error) {
-        std::cerr << "on_parsing_error(): " << error.what() << std::endl;
-        if (section) {
-            const auto file = section->get_file();
-            if (file) {
-                std::cerr << "  URI = " << file->get_uri() << std::endl;
-            }
-
-            auto start_location = section->get_start_location();
-            auto end_location   = section->get_end_location();
-            std::cerr << "  start_line = " << start_location.get_lines() + 1
-                      << ", end_line = " << end_location.get_lines() + 1 << std::endl;
-            std::cerr << "  start_position = " << start_location.get_line_chars()
-                      << ", end_position = " << end_location.get_line_chars() << std::endl;
-        }
-    }
 
 public:
     bar() : clock(100, "%I:%M %p %a %e %b %y") {
@@ -50,27 +35,12 @@ public:
         mpris.album_changed.connect(sigc::mem_fun(music, &mcw::widget::music::set_album));
         mpris.art_changed.connect(sigc::mem_fun(music, &mcw::widget::music::set_art));
 
-        // Load extra CSS file.
-        m_refCssProvider = Gtk::CssProvider::create();
-#if HAS_STYLE_PROVIDER_ADD_PROVIDER_FOR_DISPLAY
-        Gtk::StyleProvider::add_provider_for_display(get_display(),
-                                                     m_refCssProvider,
-                                                     GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-#else
-        Gtk::StyleContext::add_provider_for_display(get_display(),
-                                                    m_refCssProvider,
-                                                    GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-#endif
-
-        m_refCssProvider->signal_parsing_error().connect(
-            [this](const auto& section, const auto& error) { on_parsing_error(section, error); });
-        m_refCssProvider->load_from_path("bar.css");
-
+        m_refCssProvider = mcw::utils::read_css("bar.css", get_display());
 
         // testing
         mcw::model::snw watcher = mcw::model::snw("mcw");
 
-        for(auto& sni : watcher.get_snis()){
+        for (auto& sni : watcher.get_snis()) {
             std::cout << sni.Title() << std::endl;
         }
     }
@@ -91,7 +61,7 @@ private:
 int main(int argc, char** argv) {
     curl_global_init(CURL_GLOBAL_ALL);
     auto app = Gtk::Application::create("murts.cool.widgets");
-    auto r = app->make_window_and_run<bar>(argc, argv);
+    auto r   = app->make_window_and_run<bar>(argc, argv);
     curl_global_cleanup();
     return r;
 }
