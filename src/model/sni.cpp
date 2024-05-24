@@ -7,23 +7,21 @@
 namespace mcw::model {
 
     sni::sni(const std::string& destination, const std::string& object_path)
-        : ProxyInterfaces(sdbus::createDefaultBusConnection(), destination, object_path) {
+        : ProxyInterfaces(sdbus::ServiceName(destination), sdbus::ObjectPath(object_path)) {
         registerProxy();
     }
 
     sni::~sni() {
-        if (hasProxy()) {
-            unregisterProxy();
-        }
+        unregisterProxy();
     }
 
     // TODO
-    void sni::onNewTitle(){};
-    void sni::onNewIcon(){};
-    void sni::onNewAttentionIcon(){};
-    void sni::onNewOverlayIcon(){};
-    void sni::onNewToolTip(){};
-    void sni::onNewStatus(const std::string& status){};
+    void sni::onNewTitle() {};
+    void sni::onNewIcon() {};
+    void sni::onNewAttentionIcon() {};
+    void sni::onNewOverlayIcon() {};
+    void sni::onNewToolTip() {};
+    void sni::onNewStatus(const std::string& /*status*/) {};
 
     std::pair<std::string, std::string> split_service(const std::string& service) {
         int slash_index = service.find("/");
@@ -35,20 +33,19 @@ namespace mcw::model {
     }
 
     snw::snw(const std::string& id)
-        : ProxyInterfaces(sdbus::createDefaultBusConnection(),
-                          "org.kde.StatusNotifierWatcher",
-                          "/StatusNotifierWatcher") {
+        : ProxyInterfaces(sdbus::ServiceName("org.kde.StatusNotifierWatcher"),
+                          sdbus::ObjectPath("/StatusNotifierWatcher")) {
 
         registerProxy();
 
         host_name       = "org.freedesktop.StatusNotifierHost-" + std::to_string(getpid()) + "-" + id;
-        host_connection = sdbus::createDefaultBusConnection(host_name);
+        host_connection = sdbus::createBusConnection(sdbus::ServiceName(host_name));
 
         RegisterStatusNotifierHost(host_name);
 
         for (auto& service : RegisteredStatusNotifierItems()) {
             auto [destination, object_path] = split_service(service);
-            snis.emplace_back(destination, object_path);
+            snis.push_back(std::make_shared<sni>(destination, object_path));
         }
     }
 
@@ -56,13 +53,14 @@ namespace mcw::model {
         unregisterProxy();
     }
 
-    std::vector<sni>& snw::get_snis() {
+    std::vector<std::shared_ptr<sni>>& snw::get_snis() {
         return snis;
     }
 
     void snw::onStatusNotifierItemRegistered(const std::string& service) {
         auto [destination, object_path] = split_service(service);
-        sni& s                          = snis.emplace_back(destination, object_path);
+        snis.push_back(std::make_shared<sni>(destination, object_path));
+        std::shared_ptr<sni>& s = snis.back();
 
         item_registered.emit(s);
     }

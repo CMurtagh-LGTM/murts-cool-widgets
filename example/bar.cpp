@@ -41,7 +41,7 @@ public:
         mcw::model::snw watcher = mcw::model::snw("mcw");
 
         for (auto& sni : watcher.get_snis()) {
-            std::cout << sni.Title() << std::endl;
+            std::cout << sni->Title() << std::endl;
         }
     }
     ~bar() override {}

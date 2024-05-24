@@ -1,15 +1,13 @@
 #include "model/mpris.hpp"
 
-#include "org.mpris.MediaPlayer2.hpp"
 #include "utils/fetch_image.hpp"
 
 // TODO use async versions
 namespace mcw::source {
 
     mpris::mpris()
-        : ProxyInterfaces(sdbus::createDefaultBusConnection(),
-                          "org.mpris.MediaPlayer2.spotify",
-                          "/org/mpris/MediaPlayer2") {
+        : ProxyInterfaces(sdbus::ServiceName("org.mpris.MediaPlayer2.spotify"),
+                          sdbus::ObjectPath("/org/mpris/MediaPlayer2")) {
         registerProxy();
     }
 
@@ -17,19 +15,20 @@ namespace mcw::source {
         unregisterProxy();
     }
 
-    void mpris::onPropertiesChanged(const std::string&,
-                                    const std::map<std::string, sdbus::Variant>& changed_properties,
-                                    const std::vector<std::string>&) {
-        if (changed_properties.contains("Metadata")) {
-            auto metadata = changed_properties.at("Metadata").get<std::map<std::string, sdbus::Variant>>();
-            if (metadata.contains("xesam:title")) {
-                track_changed.emit(metadata["xesam:title"].get<std::string>());
+    void mpris::onPropertiesChanged(const sdbus::InterfaceName&,
+                                    const std::map<sdbus::PropertyName, sdbus::Variant>& changed_properties,
+                                    const std::vector<sdbus::PropertyName>&) {
+        if (changed_properties.contains(sdbus::PropertyName("Metadata"))) {
+            auto metadata = changed_properties.at(sdbus::PropertyName("Metadata"))
+                                .get<std::map<sdbus::PropertyName, sdbus::Variant>>();
+            if (metadata.contains(sdbus::PropertyName("xesam:title"))) {
+                track_changed.emit(metadata[sdbus::PropertyName("xesam:title")].get<std::string>());
             }
-            if (metadata.contains("xesam:album")) {
-                album_changed.emit(metadata["xesam:album"].get<std::string>());
+            if (metadata.contains(sdbus::PropertyName("xesam:album"))) {
+                album_changed.emit(metadata[sdbus::PropertyName("xesam:album")].get<std::string>());
             }
-            if (metadata.contains("mpris:artUrl")) {
-                art_changed.emit(utils::fetch_image(metadata["mpris:artUrl"].get<std::string>()));
+            if (metadata.contains(sdbus::PropertyName("mpris:artUrl"))) {
+                art_changed.emit(utils::fetch_image(metadata[sdbus::PropertyName("mpris:artUrl")].get<std::string>()));
             }
         }
     }

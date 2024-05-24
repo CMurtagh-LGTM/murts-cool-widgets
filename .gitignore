@@ -3,3 +3,4 @@ build/
 .cache/
 subprojects/*
 !subprojects/*.wrap
+!subprojects/sdbus-cpp

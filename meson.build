@@ -16,7 +16,7 @@ json = dependency('nlohmann_json', fallback: 'nlohmann_json')
 curl = dependency('libcurl')
 
 sdbuscpp_proj_opts = cmake.subproject_options()
-sdbuscpp_proj_opts.add_cmake_defines({'BUILD_CODE_GEN': true})
+sdbuscpp_proj_opts.add_cmake_defines({'SDBUSCPP_BUILD_CODEGEN': true})
 sdbuscpp_proj = cmake.subproject('sdbus-cpp', options: sdbuscpp_proj_opts)
 sdbuscpp = sdbuscpp_proj.dependency('sdbus-c++')
 

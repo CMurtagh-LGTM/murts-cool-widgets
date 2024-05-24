@@ -12,9 +12,9 @@ namespace mcw::source {
         : public sdbus::ProxyInterfaces<org::mpris::MediaPlayer2_proxy,
                                         org::mpris::MediaPlayer2::Player_proxy,
                                         sdbus::Properties_proxy> {
-        void onPropertiesChanged(const std::string& interface_name,
-                                 const std::map<std::string, sdbus::Variant>& changed_properties,
-                                 const std::vector<std::string>& invalidated_properties) override;
+        void onPropertiesChanged(const sdbus::InterfaceName& interface_name,
+                                 const std::map<sdbus::PropertyName, sdbus::Variant>& changed_properties,
+                                 const std::vector<sdbus::PropertyName>& invalidated_properties) override;
         void onSeeked(const int64_t& position) override;
 
     public:
