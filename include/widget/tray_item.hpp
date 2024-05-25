@@ -14,7 +14,7 @@ namespace mcw::widget {
         tray_item();
         ~tray_item() override;
 
-        void set_icon(const std::string& icon_name);
+        void set_icon(const std::string& new_icon, const std::string& icon_path = "");
 
     protected:
         Gtk::SizeRequestMode get_request_mode_vfunc() const override;

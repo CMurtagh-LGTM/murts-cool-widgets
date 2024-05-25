@@ -22,7 +22,10 @@ namespace mcw::widget {
         icon.unparent();
     }
 
-    void tray_item::set_icon(const std::string& icon_name) {
+    void tray_item::set_icon(const std::string& icon_name, const std::string& icon_path) {
+        if (!utils::has_icon(icon_name)) {
+            utils::add_icon_path(icon_path);
+        }
         icon.set_paintable(utils::lookup_icon(icon_name, 32));
     }
 

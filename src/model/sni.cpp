@@ -8,12 +8,15 @@
 namespace mcw::model {
 
     std::pair<std::string, std::string> split_service(const std::string& service) {
-        int slash_index = service.find("/");
+        size_t slash_index = service.find("/");
 
+        if (slash_index == std::string::npos) {
+            return {service, ""};
+        }
         std::string destination = service.substr(0, slash_index);
         std::string object_path = service.substr(slash_index, service.size() - slash_index);
 
-        return std::make_pair(destination, object_path);
+        return {destination, object_path};
     }
 
     sni::sni(const std::string& destination, const std::string& object_path)
@@ -51,7 +54,9 @@ namespace mcw::model {
 
         for (auto& service : RegisteredStatusNotifierItems()) {
             auto [destination, object_path] = split_service(service);
-            snis.push_back(std::make_shared<sni>(destination, object_path));
+            if (object_path != "") {
+                snis.push_back(std::make_shared<sni>(destination, object_path));
+            }
         }
     }
 
@@ -65,10 +70,12 @@ namespace mcw::model {
 
     void snw::onStatusNotifierItemRegistered(const std::string& service) {
         auto [destination, object_path] = split_service(service);
-        snis.push_back(std::make_shared<sni>(destination, object_path));
-        std::shared_ptr<sni>& s = snis.back();
+        if (object_path != "") {
+            snis.push_back(std::make_shared<sni>(destination, object_path));
+            std::shared_ptr<sni>& s = snis.back();
 
-        item_registered.emit(s);
+            item_registered.emit(s);
+        }
     }
 
     void snw::onStatusNotifierItemUnregistered(const std::string& service) {

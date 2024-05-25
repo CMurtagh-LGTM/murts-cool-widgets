@@ -3,6 +3,7 @@
 #include <gtkmm.h>
 #include <iostream>
 
+#include "control/tray.hpp"
 #include "model/clock.hpp"
 #include "model/mpris.hpp"
 #include "model/sni.hpp"
@@ -14,7 +15,7 @@ class bar : public Gtk::Window {
     // TODO put this somewhere else
 
 public:
-    bar() : clock(100, "%I:%M %p %a %e %b %y"), snw("mcw") {
+    bar() : clock(100, "%I:%M %p %a %e %b %y") {
 
         // Make this a bar using gtk4-layer-shell
         gtk_layer_init_for_window(gobj());
@@ -26,7 +27,7 @@ public:
 
         box.set_center_widget(clock_label);
         end.append(music);
-        end.append(tray);
+        end.append(tray_sni.get_widget());
         box.set_end_widget(end);
         set_child(box);
 
@@ -41,11 +42,6 @@ public:
         m_refCssProvider = mcw::utils::read_css("bar.css", get_display());
 
         // testing
-        for (auto& sni : snw.get_snis()) {
-            auto item = tray.append();
-            item->set_icon(sni->IconName());
-            item->signal_clicked().connect(sigc::mem_fun(*sni, &mcw::model::sni::activate));
-        }
     }
     ~bar() override {}
 
@@ -59,8 +55,7 @@ private:
     mcw::source::mpris mpris;
     mcw::widget::music music;
 
-    mcw::model::snw snw;
-    mcw::widget::tray tray;
+    mcw::control::tray_sni tray_sni;
 
     Glib::RefPtr<Gtk::CssProvider> m_refCssProvider;
 };

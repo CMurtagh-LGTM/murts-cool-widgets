@@ -7,10 +7,11 @@
 
 #include "org.kde.StatusNotifierItem.hpp"
 #include "org.kde.StatusNotifierWatcher.hpp"
+#include "utils/Introspectable_proxy.hpp"
 
 namespace mcw::model {
 
-    class sni : public sdbus::ProxyInterfaces<org::kde::StatusNotifierItem_proxy> {
+    class sni : public sdbus::ProxyInterfaces<org::kde::StatusNotifierItem_proxy, mcw::utils::Introspectable_proxy> {
     public:
         enum class status { passive, active, needs_attention };
 
