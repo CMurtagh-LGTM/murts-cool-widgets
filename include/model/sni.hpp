@@ -12,9 +12,15 @@ namespace mcw::model {
 
     class sni : public sdbus::ProxyInterfaces<org::kde::StatusNotifierItem_proxy> {
     public:
-        sni(const std::string& destination, const std::string& object_path);
+        enum class status { passive, active, needs_attention };
 
-        ~sni();
+        sni(const std::string& destination, const std::string& object_path);
+        virtual ~sni();
+
+        sigc::signal<void(const std::string&)> icon_changed;
+        sigc::signal<void(const status)> status_changed;
+
+        void activate();
 
     private:
         void onNewTitle() override;
@@ -23,6 +29,8 @@ namespace mcw::model {
         void onNewOverlayIcon() override;
         void onNewToolTip() override;
         void onNewStatus(const std::string& status) override;
+
+        std::string service_name;
     };
 
     class snw : private sdbus::ProxyInterfaces<org::kde::StatusNotifierWatcher_proxy> {

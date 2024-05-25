@@ -2,26 +2,10 @@
 
 #include <utility>
 
+#include "model/menu.hpp"
 #include "sdbus-c++/ProxyInterfaces.h"
 
 namespace mcw::model {
-
-    sni::sni(const std::string& destination, const std::string& object_path)
-        : ProxyInterfaces(sdbus::ServiceName(destination), sdbus::ObjectPath(object_path)) {
-        registerProxy();
-    }
-
-    sni::~sni() {
-        unregisterProxy();
-    }
-
-    // TODO
-    void sni::onNewTitle() {};
-    void sni::onNewIcon() {};
-    void sni::onNewAttentionIcon() {};
-    void sni::onNewOverlayIcon() {};
-    void sni::onNewToolTip() {};
-    void sni::onNewStatus(const std::string& /*status*/) {};
 
     std::pair<std::string, std::string> split_service(const std::string& service) {
         int slash_index = service.find("/");
@@ -31,6 +15,28 @@ namespace mcw::model {
 
         return std::make_pair(destination, object_path);
     }
+
+    sni::sni(const std::string& destination, const std::string& object_path)
+        : ProxyInterfaces(sdbus::ServiceName(destination), sdbus::ObjectPath(object_path)), service_name(destination) {
+        registerProxy();
+    }
+
+    sni::~sni() {
+        unregisterProxy();
+    }
+
+    void sni::activate() {
+        menu m = menu(service_name, Menu());
+        m.get_layout();
+    }
+
+    // TODO
+    void sni::onNewTitle() {};
+    void sni::onNewIcon() {};
+    void sni::onNewAttentionIcon() {};
+    void sni::onNewOverlayIcon() {};
+    void sni::onNewToolTip() {};
+    void sni::onNewStatus(const std::string& /*status*/) {};
 
     snw::snw(const std::string& id)
         : ProxyInterfaces(sdbus::ServiceName("org.kde.StatusNotifierWatcher"),

@@ -8,12 +8,13 @@
 #include "model/sni.hpp"
 #include "utils/css.hpp"
 #include "widget/music.hpp"
+#include "widget/tray_item.hpp"
 
 class bar : public Gtk::Window {
     // TODO put this somewhere else
 
 public:
-    bar() : clock(100, "%I:%M %p %a %e %b %y") {
+    bar() : clock(100, "%I:%M %p %a %e %b %y"), snw("mcw") {
 
         // Make this a bar using gtk4-layer-shell
         gtk_layer_init_for_window(gobj());
@@ -24,7 +25,9 @@ public:
         gtk_layer_set_anchor(gobj(), GTK_LAYER_SHELL_EDGE_RIGHT, true);
 
         box.set_center_widget(clock_label);
-        box.set_end_widget(music);
+        end.append(music);
+        end.append(tray);
+        box.set_end_widget(end);
         set_child(box);
 
         clock.tick.connect(sigc::mem_fun(clock_label, &Gtk::Label::set_text));
@@ -38,10 +41,10 @@ public:
         m_refCssProvider = mcw::utils::read_css("bar.css", get_display());
 
         // testing
-        mcw::model::snw watcher = mcw::model::snw("mcw");
-
-        for (auto& sni : watcher.get_snis()) {
-            std::cout << sni->Title() << std::endl;
+        for (auto& sni : snw.get_snis()) {
+            auto item = tray.append();
+            item->set_icon(sni->IconName());
+            item->signal_clicked().connect(sigc::mem_fun(*sni, &mcw::model::sni::activate));
         }
     }
     ~bar() override {}
@@ -51,9 +54,13 @@ private:
     Gtk::Label clock_label;
 
     Gtk::CenterBox box;
+    Gtk::Box end;
 
     mcw::source::mpris mpris;
     mcw::widget::music music;
+
+    mcw::model::snw snw;
+    mcw::widget::tray tray;
 
     Glib::RefPtr<Gtk::CssProvider> m_refCssProvider;
 };
