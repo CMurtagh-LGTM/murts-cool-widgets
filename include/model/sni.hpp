@@ -5,6 +5,7 @@
 #include <sigc++/sigc++.h>
 #include <vector>
 
+#include "model/menu.hpp"
 #include "org.kde.StatusNotifierItem.hpp"
 #include "org.kde.StatusNotifierWatcher.hpp"
 #include "utils/Introspectable_proxy.hpp"
@@ -21,7 +22,7 @@ namespace mcw::model {
         sigc::signal<void(const std::string&)> icon_changed;
         sigc::signal<void(const status)> status_changed;
 
-        void activate();
+        menu get_menu();
 
     private:
         void onNewTitle() override;

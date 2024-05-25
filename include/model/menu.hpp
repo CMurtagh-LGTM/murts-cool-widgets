@@ -7,12 +7,22 @@
 
 namespace mcw::model {
 
+    class menu_item {
+    public:
+        menu_item(const std::string& label);
+
+        const std::string& get_label() const;
+
+    private:
+        std::string label;
+    };
+
     class menu : public sdbus::ProxyInterfaces<com::canonical::dbusmenu_proxy> {
     public:
         menu(const std::string& destination, const std::string& object_path);
         virtual ~menu();
 
-        void get_layout();
+        std::vector<menu_item> get_layout();
 
         virtual void onItemsPropertiesUpdated(
             const std::vector<sdbus::Struct<int32_t, std::map<std::string, sdbus::Variant>>>& updatedProps,

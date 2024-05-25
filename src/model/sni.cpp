@@ -2,7 +2,6 @@
 
 #include <utility>
 
-#include "model/menu.hpp"
 #include "sdbus-c++/ProxyInterfaces.h"
 
 namespace mcw::model {
@@ -28,9 +27,8 @@ namespace mcw::model {
         unregisterProxy();
     }
 
-    void sni::activate() {
-        menu m = menu(service_name, Menu());
-        m.get_layout();
+    menu sni::get_menu() {
+        return menu(service_name, Menu());
     }
 
     // TODO

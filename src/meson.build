@@ -5,6 +5,7 @@ srcs = files(
   'model/menu.cpp',
   'widget/music.cpp',
   'widget/tray_item.cpp',
+  'widget/menu.cpp',
   'control/tray.cpp',
   'utils/WidgetName.cpp',
   'utils/fetch_image.cpp',
