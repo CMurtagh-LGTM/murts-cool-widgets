@@ -7,6 +7,7 @@ A collection of GTK widgets to use in ricing Linux.
 - [gtk4-layer-shell](https://github.com/wmww/gtk4-layer-shell)
 - [sigc++](https://libsigcplusplus.github.io/libsigcplusplus/)
 - [json](https://github.com/nlohmann/json)
+- [libxml++](https://github.com/libxmlplusplus/libxmlplusplus)
 - [sdbus-cpp](https://github.com/Kistler-Group/sdbus-cpp) - built as a subproject
 
 ## Inspiration
