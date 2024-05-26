@@ -1,0 +1,24 @@
+# https://github.com/wmww/gtk4-layer-shell/blob/main/.github/workflows/build_and_test.yml
+name: 'Build'
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Apt update
+      run: sudo apt update
+    - name: Install depends
+      run: sudo apt install meson
+    - name: Meson
+      run: meson setup build
+#      env:
+#        CFLAGS: -Werror
+    - name: Build
+      run: ninja -C build
