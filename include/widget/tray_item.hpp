@@ -32,14 +32,6 @@ namespace mcw::widget {
     private:
         Gtk::Picture icon;
     };
-
-    class tray : public Gtk::Box {
-    public:
-        Glib::RefPtr<tray_item> append();
-
-    private:
-        std::vector<Glib::RefPtr<tray_item>> items;
-    };
 }  // namespace mcw::widget
 
 #endif  // TRAY_ITEM_HPP

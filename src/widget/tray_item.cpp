@@ -63,10 +63,4 @@ namespace mcw::widget {
         icon.size_allocate(full_allocation, 0);
     }
 
-    Glib::RefPtr<tray_item> tray::append() {
-        Glib::RefPtr<tray_item> item = items.emplace_back(std::make_shared<tray_item>());
-        item->insert_at_end(*this);
-        return item;
-    }
-
 }  // namespace mcw::widget

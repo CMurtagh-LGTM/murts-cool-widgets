@@ -1,12 +1,10 @@
 #include "model/sni.hpp"
 
-#include <utility>
-
 #include "sdbus-c++/ProxyInterfaces.h"
 
 namespace mcw::model {
 
-    std::pair<std::string, std::string> split_service(const std::string& service) {
+    sni::service_t split_service(const std::string& service) {
         size_t slash_index = service.find("/");
 
         if (slash_index == std::string::npos) {
@@ -18,8 +16,9 @@ namespace mcw::model {
         return {destination, object_path};
     }
 
-    sni::sni(const std::string& destination, const std::string& object_path)
-        : ProxyInterfaces(sdbus::ServiceName(destination), sdbus::ObjectPath(object_path)), service_name(destination) {
+    sni::sni(const service_t& service)
+        : ProxyInterfaces(sdbus::ServiceName(service.destination), sdbus::ObjectPath(service.object_path))
+        , service_name(service.destination) {
         registerProxy();
     }
 
@@ -49,36 +48,35 @@ namespace mcw::model {
         host_connection = sdbus::createBusConnection(sdbus::ServiceName(host_name));
 
         RegisterStatusNotifierHost(host_name);
-
-        for (auto& service : RegisteredStatusNotifierItems()) {
-            auto [destination, object_path] = split_service(service);
-            if (object_path != "") {
-                snis.push_back(std::make_shared<sni>(destination, object_path));
-            }
-        }
     }
 
     snw::~snw() {
         unregisterProxy();
     }
 
-    std::vector<std::shared_ptr<sni>>& snw::get_snis() {
-        return snis;
+    std::vector<sni::service_t> snw::get_sni_services() {
+        std::vector<sni::service_t> services;
+        for (auto& raw_service : RegisteredStatusNotifierItems()) {
+            sni::service_t service = split_service(raw_service);
+            if (service.object_path != "") {
+                services.push_back(service);
+            }
+        }
+        return services;
     }
 
-    void snw::onStatusNotifierItemRegistered(const std::string& service) {
-        auto [destination, object_path] = split_service(service);
-        if (object_path != "") {
-            snis.push_back(std::make_shared<sni>(destination, object_path));
-            std::shared_ptr<sni>& s = snis.back();
-
-            item_registered.emit(s);
+    void snw::onStatusNotifierItemRegistered(const std::string& raw_service) {
+        auto service = split_service(raw_service);
+        if (service.object_path != "") {
+            item_registered.emit(service);
         }
     }
 
-    void snw::onStatusNotifierItemUnregistered(const std::string& service) {
-        // TODO find and remove item from snis
-        item_unregistered.emit(service);
+    void snw::onStatusNotifierItemUnregistered(const std::string& raw_service) {
+        auto service = split_service(raw_service);
+        if (service.object_path != "") {
+            item_registered.emit(service);
+        }
     }
 
     // We don't need these signals

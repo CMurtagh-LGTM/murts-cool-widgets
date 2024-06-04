@@ -14,12 +14,20 @@ namespace mcw::control {
         Gtk::Widget& get_widget();
 
     private:
-        void add_sni(std::shared_ptr<model::sni> sni);
+        void add_sni(model::sni::service_t sni);
 
-        void clicked(std::shared_ptr<model::sni> sni);
+        void clicked(std::shared_ptr<model::sni>& sni);
+
+        struct item_t {
+            std::shared_ptr<model::sni> sni;
+            Glib::RefPtr<widget::tray_item> item;
+            item_t(const model::sni::service_t&);
+        };
+
+        std::vector<item_t> items;
 
         model::snw snw;
-        widget::tray tray;
+        Gtk::Box tray;
 
         Gtk::Popover popover;
     };

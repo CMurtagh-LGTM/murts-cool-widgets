@@ -3,7 +3,6 @@
 
 #include <sdbus-c++/sdbus-c++.h>
 #include <sigc++/sigc++.h>
-#include <vector>
 
 #include "model/menu.hpp"
 #include "org.kde.StatusNotifierItem.hpp"
@@ -16,7 +15,12 @@ namespace mcw::model {
     public:
         enum class status { passive, active, needs_attention };
 
-        sni(const std::string& destination, const std::string& object_path);
+        struct service_t {
+            std::string destination;
+            std::string object_path;
+        };
+
+        sni(const service_t&);
         virtual ~sni();
 
         sigc::signal<void(const std::string&)> icon_changed;
@@ -40,10 +44,10 @@ namespace mcw::model {
         snw(const std::string& id);
         virtual ~snw();
 
-        sigc::signal<void(std::shared_ptr<sni>)> item_registered;
-        sigc::signal<void(const std::string&)> item_unregistered;
+        sigc::signal<void(const sni::service_t&)> item_registered;
+        sigc::signal<void(const sni::service_t&)> item_unregistered;
 
-        std::vector<std::shared_ptr<sni>>& get_snis();
+        std::vector<sni::service_t> get_sni_services();
 
     private:
         void onStatusNotifierItemRegistered(const std::string& service) override;
@@ -53,8 +57,6 @@ namespace mcw::model {
 
         std::string host_name;
         std::unique_ptr<sdbus::IConnection> host_connection;
-
-        std::vector<std::shared_ptr<sni>> snis;
     };
 }  // namespace mcw::model
 
