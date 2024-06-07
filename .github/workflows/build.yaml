@@ -15,7 +15,7 @@ jobs:
     - name: Apt update
       run: sudo apt update
     - name: Install depends
-      run: sudo apt install meson
+      run: sudo apt install meson libgtkmm-4.0-dev
     - name: Meson
       run: meson setup build
 #      env:
