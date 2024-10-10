@@ -16,13 +16,15 @@ json = dependency('nlohmann_json', fallback: 'nlohmann_json')
 curl = dependency('libcurl')
 libxml = dependency(
   'libxml++',
-  default_options: {'build-deprecated-api':false, 'build-examples':false, 'build-tests':false}
+  default_options: {'build-deprecated-api': false, 'build-examples': false, 'build-tests': false}
 )
 
 sdbuscpp_proj_opts = cmake.subproject_options()
-sdbuscpp_proj_opts.add_cmake_defines({'SDBUSCPP_BUILD_CODEGEN': true})
+sdbuscpp_proj_opts.add_cmake_defines({'SDBUSCPP_BUILD_CODEGEN': true, 'SDBUSCPP_BUILD_DOCS': false})
 sdbuscpp_proj = cmake.subproject('sdbus-cpp', options: sdbuscpp_proj_opts)
 sdbuscpp = sdbuscpp_proj.dependency('sdbus-c++')
+
+message('CMake targets:\n - ' + '\n - '.join(sdbuscpp_proj.target_list()))
 
 subdir('src')
 subdir('protocol')

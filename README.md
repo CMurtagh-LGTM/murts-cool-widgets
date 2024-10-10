@@ -13,5 +13,6 @@ A collection of GTK widgets to use in ricing Linux.
 ## Inspiration
 
 - [eww](https://github.com/elkowar/eww)
+- [ignis](https://github.com/linkfrg/ignis)
 - [ironbar](https://github.com/JakeStanger/ironbar)
 - [waybar](https://github.com/Alexays/Waybar)
