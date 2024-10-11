@@ -1,5 +1,4 @@
-#ifndef MPRIS_HPP
-#define MPRIS_HPP
+#pragma once
 
 #include <gdkmm.h>
 #include <sdbus-c++/sdbus-c++.h>
@@ -30,5 +29,3 @@ namespace mcw::source {
         Glib::RefPtr<Gdk::Texture> get_art();
     };
 }  // namespace mcw::source
-
-#endif  // MPRIS_HPP

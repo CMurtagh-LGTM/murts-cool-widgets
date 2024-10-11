@@ -1,5 +1,4 @@
-#ifndef MENU_HPP
-#define MENU_HPP
+#pragma once
 
 #include <sdbus-c++/sdbus-c++.h>
 
@@ -32,5 +31,3 @@ namespace mcw::model {
     };
 
 }  // namespace mcw::model
-
-#endif  // MENU_HPP

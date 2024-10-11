@@ -1,5 +1,4 @@
-#ifndef INTROSPECTABLE_PROXY_HPP
-#define INTROSPECTABLE_PROXY_HPP
+#pragma once
 
 #include "sdbus-c++/StandardInterfaces.h"
 
@@ -14,5 +13,3 @@ namespace mcw::utils {
     };
 
 }  // namespace mcw::utils
-
-#endif  // INTROSPECTABLE_PROXY_HPP

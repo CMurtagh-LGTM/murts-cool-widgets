@@ -1,5 +1,4 @@
-#ifndef WIDGETNAME_HPP
-#define WIDGETNAME_HPP
+#pragma once
 
 #include <glibmm/extraclassinit.h>
 #include <glibmm/ustring.h>
@@ -14,5 +13,3 @@ namespace mcw::utils {
         Glib::ustring m_css_name;
     };
 }  // namespace mcw::utils
-
-#endif  // WIDGETNAME_HPP

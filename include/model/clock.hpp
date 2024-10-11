@@ -1,5 +1,4 @@
-#ifndef CLOCK_HPP
-#define CLOCK_HPP
+#pragma once
 
 #include <sigc++/signal.h>
 #include <string>
@@ -17,5 +16,3 @@ namespace mcw::source {
     };
 
 }  // namespace mcw::source
-
-#endif  // CLOCK_HPP

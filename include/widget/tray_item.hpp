@@ -1,5 +1,4 @@
-#ifndef TRAY_ITEM_HPP
-#define TRAY_ITEM_HPP
+#pragma once
 
 #include "gtkmm/box.h"
 #include "gtkmm/picture.h"
@@ -33,5 +32,3 @@ namespace mcw::widget {
         Gtk::Picture icon;
     };
 }  // namespace mcw::widget
-
-#endif  // TRAY_ITEM_HPP

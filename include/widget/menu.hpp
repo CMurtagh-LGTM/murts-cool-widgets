@@ -1,5 +1,4 @@
-#ifndef WIDGET_MENU_HPP
-#define WIDGET_MENU_HPP
+#pragma once
 
 #include "gtkmm/box.h"
 #include "gtkmm/button.h"
@@ -20,5 +19,3 @@ namespace mcw::widget {
     };
 
 }  // namespace mcw::widget
-
-#endif  // WIDGET_MENU_HPP

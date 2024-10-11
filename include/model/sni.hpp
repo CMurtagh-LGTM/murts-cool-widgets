@@ -1,5 +1,4 @@
-#ifndef SNI_HPP
-#define SNI_HPP
+#pragma once
 
 #include <sdbus-c++/sdbus-c++.h>
 #include <sigc++/sigc++.h>
@@ -59,5 +58,3 @@ namespace mcw::model {
         std::unique_ptr<sdbus::IConnection> host_connection;
     };
 }  // namespace mcw::model
-
-#endif  // SNI_HPP

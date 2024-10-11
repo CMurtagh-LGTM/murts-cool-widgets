@@ -1,5 +1,4 @@
-#ifndef MUSIC_HPP
-#define MUSIC_HPP
+#pragma once
 
 #include <gtkmm/label.h>
 #include <gtkmm/picture.h>
@@ -38,5 +37,3 @@ namespace mcw::widget {
         Gtk::Picture art_image;
     };
 }  // namespace mcw::widget
-
-#endif  // MUSIC_HPP

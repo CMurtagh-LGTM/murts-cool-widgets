@@ -1,5 +1,4 @@
-#ifndef CONTROL_TRAY_HPP
-#define CONTROL_TRAY_HPP
+#pragma once
 
 #include "gtkmm/popover.h"
 #include "model/sni.hpp"
@@ -33,5 +32,3 @@ namespace mcw::control {
     };
 
 }  // namespace mcw::control
-
-#endif  // CONTROL_TRAY_HPP

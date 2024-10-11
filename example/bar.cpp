@@ -1,15 +1,12 @@
 #include <curl/curl.h>
 #include <gtk4-layer-shell.h>
 #include <gtkmm.h>
-#include <iostream>
 
 #include "control/tray.hpp"
 #include "model/clock.hpp"
 #include "model/mpris.hpp"
-#include "model/sni.hpp"
 #include "utils/css.hpp"
 #include "widget/music.hpp"
-#include "widget/tray_item.hpp"
 
 class bar : public Gtk::Window {
     // TODO put this somewhere else

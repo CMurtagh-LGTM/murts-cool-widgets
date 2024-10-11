@@ -1,5 +1,4 @@
-#ifndef ICON_HPP
-#define ICON_HPP
+#pragma once
 
 #include "gtkmm/iconpaintable.h"
 
@@ -10,5 +9,3 @@ namespace mcw::utils {
     bool has_icon(const std::string& icon_name);
 
 }  // namespace mcw::utils
-
-#endif  // ICON_HPP
