@@ -3,7 +3,7 @@
 #include "utils/fetch_image.hpp"
 
 // TODO use async versions
-namespace mcw::source {
+namespace mcw::model {
 
     mpris::mpris(const std::string& name)
         : ProxyInterfaces(sdbus::ServiceName(name),

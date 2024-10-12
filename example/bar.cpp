@@ -36,7 +36,7 @@ public:
     ~bar() override {}
 
 private:
-    mcw::source::clock clock;
+    mcw::model::clock clock;
     Gtk::Label clock_label;
 
     Gtk::CenterBox box;

@@ -3,7 +3,7 @@
 #include <sigc++/signal.h>
 #include <string>
 
-namespace mcw::source {
+namespace mcw::model {
 
     class clock {
     public:

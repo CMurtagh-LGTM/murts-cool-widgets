@@ -16,7 +16,7 @@ namespace mcw::control {
 
     private:
         model::dbus* dbus;
-        std::optional<source::mpris> mpris_source;
+        std::optional<model::mpris> mpris_source;
         widget::music music;
 
         void new_player(const std::string& name);

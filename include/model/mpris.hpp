@@ -6,7 +6,7 @@
 
 #include "org.mpris.MediaPlayer2.hpp"
 
-namespace mcw::source {
+namespace mcw::model {
     class mpris
         : private sdbus::ProxyInterfaces<org::mpris::MediaPlayer2_proxy,
                                         org::mpris::MediaPlayer2::Player_proxy,

@@ -4,7 +4,7 @@
 #include <glibmm/main.h>
 #include <sigc++/sigc++.h>
 
-namespace mcw::source {
+namespace mcw::model {
 
     clock::clock(int interval, const std::string& format_) : format(format_) {
         Glib::signal_timeout().connect(sigc::mem_fun(*this, &clock::timeout_handler), interval);
