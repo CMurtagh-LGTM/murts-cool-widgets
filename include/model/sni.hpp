@@ -3,6 +3,7 @@
 #include <sdbus-c++/sdbus-c++.h>
 #include <sigc++/sigc++.h>
 
+#include "model/dbus.hpp"
 #include "model/menu.hpp"
 #include "org.kde.StatusNotifierItem.hpp"
 #include "org.kde.StatusNotifierWatcher.hpp"
@@ -26,6 +27,7 @@ namespace mcw::model {
         sigc::signal<void(const status)> status_changed;
 
         menu get_menu();
+        std::string get_name();
 
     private:
         void onNewTitle() override;
@@ -40,7 +42,7 @@ namespace mcw::model {
 
     class snw : private sdbus::ProxyInterfaces<org::kde::StatusNotifierWatcher_proxy> {
     public:
-        snw(const std::string& id);
+        snw(const std::string& id, model::dbus* dbus);
         virtual ~snw();
 
         sigc::signal<void(const sni::service_t&)> item_registered;
@@ -56,5 +58,7 @@ namespace mcw::model {
 
         std::string host_name;
         std::unique_ptr<sdbus::IConnection> host_connection;
+
+        model::dbus* dbus;
     };
 }  // namespace mcw::model

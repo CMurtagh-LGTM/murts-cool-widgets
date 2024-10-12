@@ -4,14 +4,14 @@
 
 namespace mcw::control {
 
-    tray_sni::tray_sni() : snw("mcw") {
+    tray_sni::tray_sni(model::dbus* dbus_) : snw("mcw", dbus_) {
         for (auto& service : snw.get_sni_services()) {
             add_sni(service);
         }
 
         snw.item_registered.connect(sigc::mem_fun(*this, &mcw::control::tray_sni::add_sni));
+        snw.item_unregistered.connect(sigc::mem_fun(*this, &mcw::control::tray_sni::remove_sni));
     }
-
 
     tray_sni::item_t::item_t(const model::sni::service_t& service) : sni(std::make_shared<model::sni>(service)), item(std::make_shared<widget::tray_item>()) {}
 
@@ -32,6 +32,17 @@ namespace mcw::control {
         item->set_icon(sni->IconName(), icon_path);
 
         item->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &mcw::control::tray_sni::clicked), sni));
+    }
+
+    void tray_sni::remove_sni(model::sni::service_t service) {
+        auto item = std::find_if(items.begin(), items.end(), [&service](const item_t& item){return item.sni->get_name() == service.destination;});
+        if(item == items.end()) {
+            assert(0); // Do I want to do this?
+            return;
+        }
+        
+        tray.remove(*(item->item));
+        items.erase(item);
     }
 
     void tray_sni::clicked(std::shared_ptr<model::sni>& sni) {

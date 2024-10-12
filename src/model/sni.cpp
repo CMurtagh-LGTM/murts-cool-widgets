@@ -30,6 +30,10 @@ namespace mcw::model {
         return menu(service_name, Menu());
     }
 
+    std::string sni::get_name() {
+        return service_name;
+    }
+
     // TODO
     void sni::onNewTitle() {};
     void sni::onNewIcon() {};
@@ -38,9 +42,9 @@ namespace mcw::model {
     void sni::onNewToolTip() {};
     void sni::onNewStatus(const std::string& /*status*/) {};
 
-    snw::snw(const std::string& id)
+    snw::snw(const std::string& id, model::dbus* dbus_)
         : ProxyInterfaces(sdbus::ServiceName("org.kde.StatusNotifierWatcher"),
-                          sdbus::ObjectPath("/StatusNotifierWatcher")) {
+                          sdbus::ObjectPath("/StatusNotifierWatcher")), dbus(dbus_) {
 
         registerProxy();
 
@@ -58,7 +62,7 @@ namespace mcw::model {
         std::vector<sni::service_t> services;
         for (auto& raw_service : RegisteredStatusNotifierItems()) {
             sni::service_t service = split_service(raw_service);
-            if (service.object_path != "") {
+            if (service.object_path != "" && dbus->has_name(service.destination)) {
                 services.push_back(service);
             }
         }
@@ -75,7 +79,7 @@ namespace mcw::model {
     void snw::onStatusNotifierItemUnregistered(const std::string& raw_service) {
         auto service = split_service(raw_service);
         if (service.object_path != "") {
-            item_registered.emit(service);
+            item_unregistered.emit(service);
         }
     }
 

@@ -7,5 +7,5 @@ sdbus_cpp_xml2cpp_gen = generator(
 )
 
 sdbus_cpp_xml2cpp_src = sdbus_cpp_xml2cpp_gen.process(
-  ['org.mpris.MediaPlayer2.xml', 'org.kde.StatusNotifierItem.xml', 'org.kde.StatusNotifierWatcher.xml', 'com.canonical.dbusmenu.xml']
+  ['org.mpris.MediaPlayer2.xml', 'org.kde.StatusNotifierItem.xml', 'org.kde.StatusNotifierWatcher.xml', 'com.canonical.dbusmenu.xml', 'org.freedesktop.DBus.xml']
 )

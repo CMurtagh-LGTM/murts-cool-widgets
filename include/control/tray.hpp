@@ -1,6 +1,7 @@
 #pragma once
 
 #include "gtkmm/popover.h"
+#include "model/dbus.hpp"
 #include "model/sni.hpp"
 #include "widget/tray_item.hpp"
 
@@ -8,12 +9,13 @@ namespace mcw::control {
 
     class tray_sni {
     public:
-        tray_sni();
+        tray_sni(model::dbus* dbus);
 
         Gtk::Widget& get_widget();
 
     private:
         void add_sni(model::sni::service_t sni);
+        void remove_sni(model::sni::service_t sni);
 
         void clicked(std::shared_ptr<model::sni>& sni);
 

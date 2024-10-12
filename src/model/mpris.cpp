@@ -5,8 +5,8 @@
 // TODO use async versions
 namespace mcw::source {
 
-    mpris::mpris()
-        : ProxyInterfaces(sdbus::ServiceName("org.mpris.MediaPlayer2.spotify"),
+    mpris::mpris(const std::string& name)
+        : ProxyInterfaces(sdbus::ServiceName(name),
                           sdbus::ObjectPath("/org/mpris/MediaPlayer2")) {
         registerProxy();
     }

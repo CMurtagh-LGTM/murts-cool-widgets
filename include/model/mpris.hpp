@@ -8,7 +8,7 @@
 
 namespace mcw::source {
     class mpris
-        : public sdbus::ProxyInterfaces<org::mpris::MediaPlayer2_proxy,
+        : private sdbus::ProxyInterfaces<org::mpris::MediaPlayer2_proxy,
                                         org::mpris::MediaPlayer2::Player_proxy,
                                         sdbus::Properties_proxy> {
         void onPropertiesChanged(const sdbus::InterfaceName& interface_name,
@@ -17,8 +17,8 @@ namespace mcw::source {
         void onSeeked(const int64_t& position) override;
 
     public:
-        mpris();
-        ~mpris();
+        mpris(const std::string& name);
+        virtual ~mpris();
         sigc::signal<void(const int64_t&)> seek;
         sigc::signal<void(const std::string&)> track_changed;
         sigc::signal<void(const std::string&)> album_changed;

@@ -3,16 +3,17 @@
 #include <gtkmm.h>
 
 #include "control/tray.hpp"
+#include "control/mpris.hpp"
 #include "model/clock.hpp"
-#include "model/mpris.hpp"
+#include "model/dbus.hpp"
 #include "utils/css.hpp"
-#include "widget/music.hpp"
+
 
 class bar : public Gtk::Window {
     // TODO put this somewhere else
 
 public:
-    bar() : clock(100, "%I:%M %p %a %e %b %y") {
+    bar() : clock(100, "%I:%M %p %a %e %b %y"), tray_sni(&dbus), mpris(&dbus)  {
 
         // Make this a bar using gtk4-layer-shell
         gtk_layer_init_for_window(gobj());
@@ -23,22 +24,14 @@ public:
         gtk_layer_set_anchor(gobj(), GTK_LAYER_SHELL_EDGE_RIGHT, true);
 
         box.set_center_widget(clock_label);
-        end.append(music);
+        end.append(mpris.get_widget());
         end.append(tray_sni.get_widget());
         box.set_end_widget(end);
         set_child(box);
 
         clock.tick.connect(sigc::mem_fun(clock_label, &Gtk::Label::set_text));
-        music.set_track(mpris.get_track());
-        music.set_album(mpris.get_album());
-        music.set_art(mpris.get_art());
-        mpris.track_changed.connect(sigc::mem_fun(music, &mcw::widget::music::set_track));
-        mpris.album_changed.connect(sigc::mem_fun(music, &mcw::widget::music::set_album));
-        mpris.art_changed.connect(sigc::mem_fun(music, &mcw::widget::music::set_art));
 
         m_refCssProvider = mcw::utils::read_css("bar.css", get_display());
-
-        // testing
     }
     ~bar() override {}
 
@@ -49,10 +42,9 @@ private:
     Gtk::CenterBox box;
     Gtk::Box end;
 
-    mcw::source::mpris mpris;
-    mcw::widget::music music;
-
+    mcw::model::dbus dbus;
     mcw::control::tray_sni tray_sni;
+    mcw::control::mpris mpris;
 
     Glib::RefPtr<Gtk::CssProvider> m_refCssProvider;
 };
